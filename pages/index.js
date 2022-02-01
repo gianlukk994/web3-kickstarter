@@ -1,10 +1,23 @@
 import React from "react";
+import { Card, Button } from "semantic-ui-react";
 import factory from "../ethereum/factory";
 
 const CampaignIndex = ({ campaigns }) => {
-  console.log(campaigns);
+  const items = campaigns.map((address) => {
+    return {
+      header: address,
+      description: <a>View Campaign</a>,
+      fluid: true,
+    };
+  });
 
-  return <h1>Hello!</h1>;
+  return (
+    <>
+      <h3>Open Campaigns</h3>
+      <Card.Group items={items} />
+      <Button content="Create Campaign" icon="add circle" primary={true} />
+    </>
+  );
 };
 
 CampaignIndex.getInitialProps = async () => {
