@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, Button } from "semantic-ui-react";
+import { Layout } from "../components";
 import factory from "../ethereum/factory";
 
 const CampaignIndex = ({ campaigns }) => {
@@ -12,11 +13,16 @@ const CampaignIndex = ({ campaigns }) => {
   });
 
   return (
-    <>
+    <Layout>
       <h3>Open Campaigns</h3>
+      <Button
+        floated="right"
+        content="Create Campaign"
+        icon="add circle"
+        primary={true}
+      />
       <Card.Group items={items} />
-      <Button content="Create Campaign" icon="add circle" primary={true} />
-    </>
+    </Layout>
   );
 };
 
