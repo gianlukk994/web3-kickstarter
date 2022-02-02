@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Button, Form, Input, Message } from "semantic-ui-react";
 import { Layout } from "../../components";
@@ -9,6 +10,8 @@ const CampaignNew = () => {
   const [errMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const router = useRouter();
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -19,6 +22,7 @@ const CampaignNew = () => {
       await factory.methods.createCampaign(contribution).send({
         from: accounts[0],
       });
+      router.push("/");
     } catch (error) {
       setErrorMessage(error.message);
     }
