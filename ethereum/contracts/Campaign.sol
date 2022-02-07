@@ -25,7 +25,7 @@ contract Campaign {
 
     Request[] public requests;
     address public manager;
-    uint public minumumContribution;
+    uint public minimumContribution;
     
     /// Replaced array with map for performance issue, so the map is '0x123dhasd': boolean
     mapping(address => bool) public approvers;
@@ -38,11 +38,11 @@ contract Campaign {
 
     function Campaign(uint minimum, address creator) public {
         manager = creator;
-        minumumContribution = minimum;
+        minimumContribution = minimum;
     }
 
     function contribute() public payable {
-        require(msg.value > minumumContribution);
+        require(msg.value > minimumContribution);
 
         /// Once an approver call this method will be added to address map '0x123dhasd': true
         approvers[msg.sender] = true;
@@ -78,5 +78,21 @@ contract Campaign {
 
         request.recipient.transfer(request.value);
         request.complete = true;
+    }
+
+    function getSummary() public view returns (
+      uint, uint, uint, uint, address
+    ) {
+        return (
+          minimumContribution,
+          this.balance,
+          requests.length,
+          approversCount,
+          manager
+        );
+    }
+
+    function getRequestsCount() public view returns (uint) {
+        return requests.length;
     }
 }
