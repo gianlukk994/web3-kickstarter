@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { Card, Grid } from "semantic-ui-react";
-import { Layout, ContributeForm } from "../../components";
-import Campaign from "../../ethereum/campaign";
-import web3 from "../../ethereum/web3";
+import { Button, Card, Grid } from "semantic-ui-react";
+import { Layout, ContributeForm } from "../../../components";
+import Campaign from "../../../ethereum/campaign";
+import web3 from "../../../ethereum/web3";
 
 const CampaignShow = ({
   address,
@@ -77,16 +77,28 @@ const CampaignShow = ({
     <Layout>
       <h3>Campaign Show</h3>
       <Grid>
-        <Grid.Column width={10}>
-          <Card.Group items={items} />
-        </Grid.Column>
-        <Grid.Column width={6}>
-          <ContributeForm
-            contribute={contribute}
-            errorMessage={errorMessage}
-            loading={loading}
-          />
-        </Grid.Column>
+        <Grid.Row>
+          <Grid.Column width={10}>
+            <Card.Group items={items} />
+          </Grid.Column>
+          <Grid.Column width={6}>
+            <ContributeForm
+              contribute={contribute}
+              errorMessage={errorMessage}
+              loading={loading}
+            />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column>
+            <Button
+              primary
+              onClick={() => router.push(`/campaigns/${address}/requests`)}
+            >
+              View requests
+            </Button>
+          </Grid.Column>
+        </Grid.Row>
       </Grid>
     </Layout>
   );
