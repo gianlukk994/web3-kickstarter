@@ -56,6 +56,8 @@ const CampaignShow = ({
         from: accounts[0],
         value: web3.utils.toWei(value, "ether"),
       });
+
+      router.replace(`/campaigns/${address}`);
     } catch (error) {
       console.error(error);
     }
