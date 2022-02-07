@@ -18,8 +18,9 @@
 - [ ] DRY refactors
 - [ ] Refactor the contract to the newest solc pragma
 
-### Differences between the original version
+### Differences between the original version
 Usage of functional components
+
 Usage of one of the latest version of [NextJS](https://nextjs.org/)
 
 ## Install
