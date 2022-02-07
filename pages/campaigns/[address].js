@@ -1,16 +1,20 @@
+import { useRouter } from "next/router";
 import React from "react";
-import { Card } from "semantic-ui-react";
-import { Layout } from "../../components";
+import { Card, Grid } from "semantic-ui-react";
+import { Layout, ContributeForm } from "../../components";
 import Campaign from "../../ethereum/campaign";
 import web3 from "../../ethereum/web3";
 
 const CampaignShow = ({
+  address,
   minimumContribution,
   balance,
   requestsCount,
   approversCount,
   manager,
 }) => {
+  const router = useRouter();
+
   const items = [
     {
       header: manager,
@@ -43,9 +47,31 @@ const CampaignShow = ({
     },
   ];
 
+  const contribute = async (value) => {
+    const campaign = Campaign(address);
+    try {
+      const accounts = await web3.eth.getAccounts();
+
+      await campaign.methods.contribute().send({
+        from: accounts[0],
+        value: web3.utils.toWei(value, "ether"),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Layout>
-      <Card.Group items={items} />
+      <h3>Campaign Show</h3>
+      <Grid>
+        <Grid.Column width={10}>
+          <Card.Group items={items} />
+        </Grid.Column>
+        <Grid.Column width={6}>
+          <ContributeForm contribute={contribute} />
+        </Grid.Column>
+      </Grid>
     </Layout>
   );
 };
@@ -58,6 +84,7 @@ CampaignShow.getInitialProps = async (ctx) => {
   const summary = await campaign.methods.getSummary().call();
 
   return {
+    address,
     minimumContribution: summary[0],
     balance: summary[1],
     requestsCount: summary[2],
