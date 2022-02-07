@@ -1,13 +1,17 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { Card, Button } from "semantic-ui-react";
 import { Layout } from "../components";
 import factory from "../ethereum/factory";
 
 const CampaignIndex = ({ campaigns }) => {
+  const router = useRouter();
+
   const items = campaigns.map((address) => {
     return {
       header: address,
-      description: <a>View Campaign</a>,
+      description: <Link href={`/campaigns/${address}`}>View Campaign</Link>,
       fluid: true,
     };
   });
@@ -20,6 +24,7 @@ const CampaignIndex = ({ campaigns }) => {
         content="Create Campaign"
         icon="add circle"
         primary={true}
+        onClick={() => router.push("/campaigns/new")}
       />
       <Card.Group items={items} />
     </Layout>
