@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button, Form, Input } from "semantic-ui-react";
+import { Button, Form, Input, Message } from "semantic-ui-react";
 
-const ContributeForm = ({ contribute }) => {
+const ContributeForm = ({ contribute, errorMessage, loading }) => {
   const [value, setValue] = useState("");
 
   const onSubmit = (e) => {
@@ -10,7 +10,7 @@ const ContributeForm = ({ contribute }) => {
   };
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form onSubmit={onSubmit} error={!!errorMessage}>
       <Form.Field>
         <label htmlFor="">Amount to contribute</label>
         <Input
@@ -20,7 +20,10 @@ const ContributeForm = ({ contribute }) => {
           labelPosition="right"
         />
       </Form.Field>
-      <Button primary>Contribute</Button>
+      <Message error header="Oops!" content={errorMessage} />
+      <Button loading={loading} primary>
+        Contribute
+      </Button>
     </Form>
   );
 };

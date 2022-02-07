@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { Card, Grid } from "semantic-ui-react";
 import { Layout, ContributeForm } from "../../components";
 import Campaign from "../../ethereum/campaign";
@@ -13,6 +13,9 @@ const CampaignShow = ({
   approversCount,
   manager,
 }) => {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter();
 
   const items = [
@@ -48,7 +51,11 @@ const CampaignShow = ({
   ];
 
   const contribute = async (value) => {
+    setErrorMessage(false);
+    setLoading(true);
+
     const campaign = Campaign(address);
+
     try {
       const accounts = await web3.eth.getAccounts();
 
@@ -57,9 +64,12 @@ const CampaignShow = ({
         value: web3.utils.toWei(value, "ether"),
       });
 
+      setLoading(false);
+
       router.replace(`/campaigns/${address}`);
     } catch (error) {
-      console.error(error);
+      setErrorMessage(error.message);
+      setLoading(false);
     }
   };
 
@@ -71,7 +81,11 @@ const CampaignShow = ({
           <Card.Group items={items} />
         </Grid.Column>
         <Grid.Column width={6}>
-          <ContributeForm contribute={contribute} />
+          <ContributeForm
+            contribute={contribute}
+            errorMessage={errorMessage}
+            loading={loading}
+          />
         </Grid.Column>
       </Grid>
     </Layout>
